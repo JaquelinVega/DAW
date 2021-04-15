@@ -13,24 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
-Route::get('/admin', function () {
-    return view('admin.index');
-});
-Route::get('/admin/usuarios', function () {
-    return view('admin.users');
-});
-Route::get('/admin/productos', function () {
-    return view('admin.productos');
-});
-Route::get('/practica', function () {
-    return view('practica');
-});
-Route::get('/producto/{id}', function ($id) {
-    return view('verproducto')->with('id',$id);
-});
+Route::get('/', function () {return view('index');});
+Route::get('/practica', function () {return view('practica');});
+Route::get('/producto/{id}', function ($id) {return view('verproducto')->with('id',$id);});
+
+
 Route::get('/contacto', function(){
     $contacto='Maria Jaquelin';
     $valores=10;
@@ -38,4 +25,13 @@ Route::get('/contacto', function(){
     return view('contacto')->with('nombre',$contacto)
     ->with('fondo',$color)
     ->with('valores',$valores);
+});
+
+
+Route::group(['prefix'=>'admin','as'=>'admin.'], function(){
+    Route::get('/', function () {return view('admin.index');});
+    Route::get('/usuarios', [App\Http\Controllers\Admin\UsuariosController::class,'index']);
+    Route::get('/productos',[App\Http\Controllers\Admin\ProductosController::class,'index']);
+    Route:: resource('productos',App\Http\Controllers\Admin\ProductosController::class);
+    Route:: resource('usuarios',App\Http\Controllers\Admin\UsuariosController::class);
 });
