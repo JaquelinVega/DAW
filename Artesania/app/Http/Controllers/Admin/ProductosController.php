@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Validator;
 use App\Models\Product;
+use File;
 class ProductosController extends Controller
 {
     /**
@@ -15,8 +16,12 @@ class ProductosController extends Controller
      */
     public function index()
     {
-       
-        return view('admin.productos');
+       $datos=\DB:: table('products')
+       -> select('products.*')
+       -> orderBy('id','DESC')
+       -> get();
+        return view('admin.productos')
+        -> with('productos', $datos);
     }
 
     /**
@@ -54,7 +59,7 @@ class ProductosController extends Controller
             $imagen=$request->file('imagen');
             $nombre=time().'.'.$imagen->getClientOriginalExtension();
             $destino=public_path('images/productos');
-            $request->imagen->move($destino.'/'.$nombre);
+            $request->imagen->move($destino,$nombre);
             $producto = Product::create([
                 'name'=>request()->nombre,
                 'description'=>request()->descripcion,
@@ -65,7 +70,7 @@ class ProductosController extends Controller
                 'slug'=>''
             ]);
             $producto->save();
-            dd($producto->id);
+            return back() ->with('Listo', 'se ha insertado correctamente');
         }
     }
 
@@ -111,6 +116,11 @@ class ProductosController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $producto =Producto::find($id);
+        if(File::exists(public_path('img/productos'.$producto->imagen))){
+            unlink( public_path('img/productos'.$producto->imagen) );
+        }
+        $producto->delete();
+        return back() ->with('Listo', 'se ha borrado correctamente');
     }
 }
