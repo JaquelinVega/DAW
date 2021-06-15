@@ -63,40 +63,40 @@
 <!-- ./wrapper -->
 
 <!-- jQuery -->
-<script src="{{ asset('/dash/plugins/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('dash/plugins/jquery/jquery.min.js')}}"></script>
 <!-- jQuery UI 1.11.4 -->
-<script src="{{ asset('/dash/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
+<script src="{{ asset('dash/plugins/jquery-ui/jquery-ui.min.js')}}"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
   $.widget.bridge('uibutton', $.ui.button)
 </script>
 <!-- Bootstrap 4 -->
-<script src="{{ asset('/dash/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('/dash/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 <!-- ChartJS -->
-<script src="{{ asset('/dash/plugins/chart.js/Chart.min.js') }}"></script>
+<script src="{{ asset('/dash/plugins/chart.js/Chart.min.js')}}"></script>
 <!-- Sparkline -->
-<script src="{{ asset('/dash/plugins/sparklines/sparkline.js') }}"></script>
+<script src="{{ asset('/dash/plugins/sparklines/sparkline.js')}}"></script>
 <!-- JQVMap -->
-<script src="{{ asset('/dash/plugins/jqvmap/jquery.vmap.min.js') }}"></script>
-<script src="{{ asset('/dash/plugins/jqvmap/maps/jquery.vmap.usa.js') }}"></script>
+<script src="{{ asset('/dash/plugins/jqvmap/jquery.vmap.min.js')}}"></script>
+<script src="{{ asset('/dash/plugins/jqvmap/maps/jquery.vmap.usa.js')}}"></script>
 <!-- jQuery Knob Chart -->
-<script src="{{ asset('/dash/plugins/jquery-knob/jquery.knob.min.js') }}"></script>
+<script src="{{ asset('/dash/plugins/jquery-knob/jquery.knob.min.js')}}"></script>
 <!-- daterangepicker -->
-<script src="{{ asset('/dash/plugins/moment/moment.min.js') }}"></script>
-<script src="{{ asset('/dash/plugins/daterangepicker/daterangepicker.js') }}"></script>
+<script src="{{ asset('/dash/plugins/moment/moment.min.js')}}"></script>
+<script src="{{ asset('/dash/plugins/daterangepicker/daterangepicker.js')}}"></script>
 <!-- Tempusdominus Bootstrap 4 -->
-<script src="{{ asset('/dash/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
+<script src="{{ asset('/dash/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js')}}"></script>
 <!-- Summernote -->
-<script src="{{ asset('/dash/plugins/summernote/summernote-bs4.min.js') }}"></script>
+<script src="{{ asset('/dash/plugins/summernote/summernote-bs4.min.js')}}"></script>
 <!-- overlayScrollbars -->
-<script src="{{ asset('/dash/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
+<script src="{{ asset('/dash/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
 <!-- AdminLTE App -->
-<script src="{{ asset('/dash/dist/js/adminlte.js') }}"></script>
+<script src="{{ asset('/dash/dist/js/adminlte.js')}}"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="{{ asset('/dash/dist/js/demo.js') }}"></script>
+<script src="{{ asset('/dash/dist/js/demo.js')}}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="{{ asset('/dash/dist/js/pages/dashboard.js') }}"></script>
-@yield('scripts')
+<script src="{{ asset('/dash/dist/js/pages/dashboard.js')}}"></script>
+@yield('script')
 </body>
 </html>
 

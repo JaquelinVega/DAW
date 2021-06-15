@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Validator;
-use App\Models\Product;
 use File;
+use App\Models\Product;
+use Auth;
+
 class ProductosController extends Controller
 {
     /**
@@ -14,14 +16,17 @@ class ProductosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index()
     {
-       $datos=\DB:: table('products')
-       -> select('products.*')
-       -> orderBy('id','DESC')
-       -> get();
-        return view('admin.productos')
-        -> with('productos', $datos);
+        if(Auth::user()->level!="admin"){
+            return redirect("/admin");
+        }
+        $datos=\DB::table('products')->select('products.*')->orderBy('id','DESC')->get();
+        return view('admin.productos')->with('productos',$datos);
     }
 
     /**
@@ -31,7 +36,7 @@ class ProductosController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -42,7 +47,7 @@ class ProductosController extends Controller
      */
     public function store(Request $request)
     {
-        $validator=Validator::make($request->all(),[
+        $validator= Validator::make($request->all(),[
             'nombre'=>'required|max:255|min:1',
             'descripcion'=>'required|max:255|min:1',
             'stock'=>'required|max:255|min:1|numeric',
@@ -54,11 +59,11 @@ class ProductosController extends Controller
             return back()
             ->withInput()
             ->with('errorInsertar','Favor de llenar todos los campos')
-            ->withErrors('Favor de llenar los campos');
+            ->withErrors($validator);
         }else{
             $imagen=$request->file('imagen');
             $nombre=time().'.'.$imagen->getClientOriginalExtension();
-            $destino=public_path('images/productos');
+            $destino=public_path('img/productos');
             $request->imagen->move($destino,$nombre);
             $producto = Product::create([
                 'name'=>request()->nombre,
@@ -70,7 +75,7 @@ class ProductosController extends Controller
                 'slug'=>''
             ]);
             $producto->save();
-            return back() ->with('Listo', 'se ha insertado correctamente');
+            return back()->with('Listo','Se ha insertado correctamente');
         }
     }
 
@@ -91,9 +96,48 @@ class ProductosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        //
+        $validator= Validator::make($request->all(),[
+            'nombre'=>'required|max:255|min:1',
+            'descripcion'=>'required|max:255|min:1',
+            'stock'=>'required|max:255|min:1|numeric',
+            'precio'=>'required|max:255|min:1|numeric',
+            'tags'=>'required|max:255|min:1'
+        ]);
+        if($validator->fails()){
+            return back()
+            ->withInput()
+            ->with('errorEdit','Favor de llenar todos los campos')
+            ->withErrors($validator);
+        }else{
+            $producto=Product::find($request->id);
+            $producto->name=$request->nombre;
+            $producto->description=$request->descripcion;
+            $producto->stock=$request->stock;
+            $producto->price=$request->precio;
+            $producto->tags=$request->tags;
+            $validator2= Validator::make($request->all(),[
+                'nombre'=>'required|max:255|min:1',
+                'descripcion'=>'required|max:255|min:1',
+                'stock'=>'required|max:255|min:1|numeric',
+                'precio'=>'required|max:255|min:1|numeric',
+                'tags'=>'required|max:255|min:1',
+                'imagen'=>'required|image|mimes:jpg,jpeg,png,gif,svg|max:2048'
+            ]);
+            if(!$validator2->fails()){
+                $imagen=$request->file('imagen');
+                $nombre=time().'.'.$imagen->getClientOriginalExtension();
+                $destino=public_path('img/productos');
+                $request->imagen->move($destino,$nombre);
+                if(File::exists(public_path('img/productos/'.$producto->image))){
+                    unlink(public_path('img/productos/'.$producto->image));
+                }
+                $producto->image=$nombre;
+            }
+            $producto->save();
+            return back()->with('Listo','Se ha actualizado correctamente');
+        }
     }
 
     /**
@@ -116,11 +160,12 @@ class ProductosController extends Controller
      */
     public function destroy($id)
     {
-        $producto =Producto::find($id);
-        if(File::exists(public_path('img/productos'.$producto->imagen))){
-            unlink( public_path('img/productos'.$producto->imagen) );
+        $producto=Product::find($id);
+        if(File::exists(public_path('img/productos/'.$producto->image))){
+            unlink(public_path('img/productos/'.$producto->image));
         }
         $producto->delete();
-        return back() ->with('Listo', 'se ha borrado correctamente');
+        return back()->with('Listo','Se ha borrado correctamente');
     }
 }
+
