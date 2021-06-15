@@ -36,6 +36,8 @@ Route::group(['prefix'=>'admin','as'=>'admin.'], function(){
     Route::get('/categorias', function () { return view('admin.categorias'); });
     Route::resource('/productos',App\Http\Controllers\Admin\ProductosController::class);
     Route::resource('/usuarios',App\Http\Controllers\Admin\UsuariosController::class);
+
+    Route::get('/clientes', [App\Http\Controllers\Admin\ClientesController::class,'index']);
 });
 
 Auth::routes();
