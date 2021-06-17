@@ -38,6 +38,8 @@ Route::group(['prefix'=>'admin','as'=>'admin.'], function(){
     Route::resource('/usuarios',App\Http\Controllers\Admin\UsuariosController::class);
 
     Route::get('/clientes', [App\Http\Controllers\Admin\ClientesController::class,'index']);
+    Route::get('/generarPDF', [App\Http\Controllers\Admin\ClientesController::class,'generar']);
+
 });
 
 Auth::routes();
